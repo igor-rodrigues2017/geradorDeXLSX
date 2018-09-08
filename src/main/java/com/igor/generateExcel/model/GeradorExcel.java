@@ -11,21 +11,33 @@ import org.apache.poi.xssf.usermodel.XSSFCell;
 import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
-
+/**
+ * Classe responsável por criar um arquivo em xlsx a partir de um String;
+ * @author igor
+ *
+ */
 public class GeradorExcel {
 	private String entradaDados;
-	private final String FILE_NAME = "excelFile.xlsx";
-	
+	private String FILE_NAME;
+	/**
+	 * Construtor recebe a String para ser convertida;
+	 * @param entaradaDados
+	 */
 	public GeradorExcel(String entaradaDados) {
 		this.entradaDados = entaradaDados;
 	}
-	
+	/**
+	 * Separa a String recebida e devolve uma List
+	 * @return
+	 */
 	public List<String> dividiEntrada(){
 		String[] split = entradaDados.split(Pattern.quote(";"));
 		List<String> list = Arrays.asList(split);
 		return list;
 	}
-	
+	/**
+	 * Converte a String para xlsx
+	 */
 	public void converteStringToXLSX() {
 		List<String> lista = this.dividiEntrada();
 		XSSFWorkbook workbook = new XSSFWorkbook();
@@ -69,20 +81,11 @@ public class GeradorExcel {
 				{"soli.COD_SUB_PROD_CONT_SOLT", lista.get(32)},
 				{"soli.CODMODUL_CONT_SOLT", lista.get(33)}
 		};
-		
-		int rowNum = 0;
 		System.out.println("Criando Excel");
-		
-		for (Object[] titulo : dados) {
-			XSSFRow row = sheet.createRow(rowNum++);
-			int colNum = 0;
-			for (Object field : titulo) {
-				XSSFCell cell = row.createCell(colNum++);
-				cell.setCellValue((String) field);
-			}
-		}
+		lacoDeCriacao(sheet, dados);
 		
 		try {
+			FILE_NAME = "AGENCIA_SOLT" + lista.get(4) + "CONTA_SOLT" + lista.get(5) + ".xlsx";
 			FileOutputStream outputStream = new FileOutputStream(FILE_NAME);
 			workbook.write(outputStream);
 			workbook.close();
@@ -93,5 +96,17 @@ public class GeradorExcel {
 		}
 		
 		System.out.println("Criado");
+	}
+
+	private void lacoDeCriacao(XSSFSheet sheet, Object[][] dados) {
+		int rowNum = 0;
+		for (Object[] titulo : dados) {
+			XSSFRow row = sheet.createRow(rowNum++);
+			int colNum = 0;
+			for (Object field : titulo) {
+				XSSFCell cell = row.createCell(colNum++);
+				cell.setCellValue((String) field);
+			}
+		}
 	}
 }
