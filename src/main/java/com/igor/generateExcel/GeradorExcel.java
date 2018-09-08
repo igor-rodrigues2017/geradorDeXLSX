@@ -1,4 +1,4 @@
-package com.igor.generateExcel.model;
+package com.igor.generateExcel;
 
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -85,6 +85,7 @@ public class GeradorExcel {
 		lacoDeCriacao(sheet, dados);
 		
 		try {
+			//caminho e nome do arquivo
 			FILE_NAME = "AGENCIA_SOLT" + lista.get(4) + "CONTA_SOLT" + lista.get(5) + ".xlsx";
 			FileOutputStream outputStream = new FileOutputStream(FILE_NAME);
 			workbook.write(outputStream);
